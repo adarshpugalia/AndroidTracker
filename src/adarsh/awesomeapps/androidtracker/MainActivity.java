@@ -1,5 +1,8 @@
 package adarsh.awesomeapps.androidtracker;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -13,12 +16,19 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		System.out.println("Here");
-		InternetConnection internetConnection = new InternetConnection(getApplicationContext());
-		if(internetConnection.isConnected())
-			Toast.makeText(getApplicationContext(), "Internet Connected.", Toast.LENGTH_LONG).show();
+		/* checking for internet connection. */
+		if(!checkInternetConnection())
+		{
+			Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_LONG).show();
+		}
+		
+		/* checking for play services. */
+		else if(!checkPlayServices())
+		{
+			Toast.makeText(getApplicationContext(), "Play services not available. Try Again.", Toast.LENGTH_LONG).show();
+		}
 		else
-			Toast.makeText(getApplicationContext(), "Internet not Connected.", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "All is well!", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -38,5 +48,42 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/*
+	 * This function checks whether the device is connected to a network.
+	 */
+	public boolean checkInternetConnection()
+	{
+		InternetConnection internetConnection = new InternetConnection(getApplicationContext());
+		return internetConnection.isConnected();
+	}
+	
+	/*
+	 * This function checks if the device supports play services.
+	 * If the devices does not have play services, it shows a dialog box to
+	 * update the services.
+	 * If the device is not supported, it exits the application.
+	 */
+	public boolean checkPlayServices()
+	{
+		/* checking for services. */
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		
+		if(resultCode != ConnectionResult.SUCCESS)
+		{
+			/* checking if the device is supported. */
+			if(GooglePlayServicesUtil.isUserRecoverableError(resultCode))
+			{
+				GooglePlayServicesUtil.getErrorDialog(resultCode, this, CommonUtilities.PLAY_SERVICE_RESOLUTION_REQUEST).show();
+			}
+			else
+			{
+				Toast.makeText(getApplicationContext(), "Device not supported.", Toast.LENGTH_LONG).show();
+				finish();
+			}
+			return false;
+		}
+		return true;
 	}
 }
