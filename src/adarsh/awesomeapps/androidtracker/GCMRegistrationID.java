@@ -96,8 +96,7 @@ public class GCMRegistrationID {
 			{
 				/* dismissing the dialog box. */
 				dialog.dismiss();
-			}
-			
+			}			
 		}.execute(null, null, null);
 	}
 }

@@ -1,5 +1,8 @@
 package adarsh.awesomeapps.androidtracker;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class CommonUtilities {
 	
 	/* for play services check request. */
@@ -11,4 +14,11 @@ public class CommonUtilities {
 	/* TO-D0 To be removed. */
 	/* API key for server, needed for authentication. */
 	static final String SERVER_API_KEY = "AIzaSyAgnFFMa0aXX-riyOAdIvunLWzgYKqoWQA";
+	
+	/* This function returns the Phone number of the user. */
+	public static String getPhoneNumber(Context context)
+	{
+		SharedPreferences prefs = context.getSharedPreferences("LOGIN_preferences", Context.MODE_PRIVATE);
+		return prefs.getString("PHONE", "");
+	}
 }

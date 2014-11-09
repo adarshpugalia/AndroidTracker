@@ -1,20 +1,20 @@
 package adarsh.awesomeapps.androidtracker;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
-
 public class MainActivity extends ActionBarActivity {
 
+	private Boolean isChecked = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +34,8 @@ public class MainActivity extends ActionBarActivity {
 		{
 			/* get the GCM registration ID. */
 			getRegistrationID();
+			isChecked = true;
+			Toast.makeText(getApplicationContext(), "Tap to continue.", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -61,6 +63,23 @@ public class MainActivity extends ActionBarActivity {
 	{
 	    super.onResume();
 	    checkPlayServices();
+	}
+	
+	/* onclicklistener for the activity. */
+	public void nextActivity(View view)
+	{
+		if(isChecked)
+		{
+			Intent intent;
+			
+			/* If no login data found start Login activity, else start home activity*/
+			if(CommonUtilities.getPhoneNumber(this).isEmpty())
+				intent = new Intent(this, Login.class);
+			else
+				intent = new Intent(this, Home.class);
+			
+			startActivity(intent);
+		}
 	}
 	
 	/*
