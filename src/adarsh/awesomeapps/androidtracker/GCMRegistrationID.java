@@ -9,7 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -62,12 +61,12 @@ public class GCMRegistrationID {
 		dialog.show();
 		
 		/* registering to GCM. */
-		new AsyncTask<Void, Void, Boolean>() 
+		new AsyncTask<Void, Void, String>() 
 		{
 			@Override
-			protected Boolean doInBackground(Void... params)
+			protected String doInBackground(Void... params)
 			{
-				Boolean result = true;
+				String message = "";
 				try
 				{	
 
@@ -83,19 +82,20 @@ public class GCMRegistrationID {
 				}
 				catch (IOException e)
 				{	
-					/* displaying the error. */
-					Toast.makeText(context.getApplicationContext(), "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
-					result = false;
+					message = e.getMessage();
 				}
 				
-				return result;
+				return message;
 			}
 			
 			@Override
-			protected void onPostExecute(Boolean result)
+			protected void onPostExecute(String message)
 			{
 				/* dismissing the dialog box. */
 				dialog.dismiss();
+				
+				if(!message.isEmpty())
+					Log.e("Error_log", message);
 			}			
 		}.execute(null, null, null);
 	}

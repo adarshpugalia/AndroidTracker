@@ -1,5 +1,6 @@
 package adarsh.awesomeapps.androidtracker;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -31,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(getApplicationContext(), "Play services not available. Try Again.", Toast.LENGTH_LONG).show();
 		}
 		else 
-		{
+		{	
 			/* get the GCM registration ID. */
 			getRegistrationID();
 			isChecked = true;
@@ -136,6 +137,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			if(registrationID.isEmpty())
 			{
+				/* TO-DO remove finish() and use timer. */
 				Toast.makeText(getApplicationContext(), "Could not register to GCM. Try again.", Toast.LENGTH_LONG).show();
 				finish();
 			}
