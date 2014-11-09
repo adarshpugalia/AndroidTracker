@@ -21,14 +21,16 @@ public class MainActivity extends ActionBarActivity {
 		{
 			Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_LONG).show();
 		}
-		
 		/* checking for play services. */
 		else if(!checkPlayServices())
 		{
 			Toast.makeText(getApplicationContext(), "Play services not available. Try Again.", Toast.LENGTH_LONG).show();
 		}
-		else
-			Toast.makeText(getApplicationContext(), "All is well!", Toast.LENGTH_LONG).show();
+		else 
+		{
+			/* get the GCM registration ID. */
+			getRegistrationID();
+		}
 	}
 
 	@Override
@@ -48,6 +50,13 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onResume()
+	{
+	    super.onResume();
+	    checkPlayServices();
 	}
 	
 	/*
@@ -85,5 +94,20 @@ public class MainActivity extends ActionBarActivity {
 			return false;
 		}
 		return true;
+	}
+	
+	public void getRegistrationID()
+	{
+		/* creating the GCMRegistration object. */
+		GCMRegistrationID gcmRegistrationId = new GCMRegistrationID(this);
+		
+		/* getting the current registration ID from preference file. */
+		gcmRegistrationId.getRegistrationID(this);
+		
+		/* if not registered, registring with GCM. */
+		if(CommonUtilities.REGISTRATION_ID.isEmpty())
+		{
+			gcmRegistrationId.register(this);
+		}
 	}
 }
