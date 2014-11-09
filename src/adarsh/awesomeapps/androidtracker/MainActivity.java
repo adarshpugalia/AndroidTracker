@@ -3,10 +3,14 @@ package adarsh.awesomeapps.androidtracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -96,18 +100,26 @@ public class MainActivity extends ActionBarActivity {
 		return true;
 	}
 	
+	/* This function registers the device for GCM. */
 	public void getRegistrationID()
 	{
 		/* creating the GCMRegistration object. */
 		GCMRegistrationID gcmRegistrationId = new GCMRegistrationID(this);
 		
 		/* getting the current registration ID from preference file. */
-		gcmRegistrationId.getRegistrationID(this);
+		String registrationID = gcmRegistrationId.getRegistrationID();
 		
 		/* if not registered, registring with GCM. */
-		if(CommonUtilities.REGISTRATION_ID.isEmpty())
+		if(registrationID.isEmpty())
 		{
-			gcmRegistrationId.register(this);
+			gcmRegistrationId.register();
+			registrationID = gcmRegistrationId.getRegistrationID();
+			
+			if(registrationID.isEmpty())
+			{
+				Toast.makeText(getApplicationContext(), "Could not register to GCM. Try again.", Toast.LENGTH_LONG).show();
+				finish();
+			}
 		}
 	}
 }

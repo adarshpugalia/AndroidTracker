@@ -11,7 +11,4 @@ public class CommonUtilities {
 	/* TO-D0 To be removed. */
 	/* API key for server, needed for authentication. */
 	static final String SERVER_API_KEY = "AIzaSyAgnFFMa0aXX-riyOAdIvunLWzgYKqoWQA";
-	
-	/* Registeration ID for the application. */
-	static String REGISTRATION_ID = "";
 }
