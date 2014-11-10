@@ -79,7 +79,7 @@
             android:text="New User? Click Here"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="newUser"
+            android:onClick="register"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
