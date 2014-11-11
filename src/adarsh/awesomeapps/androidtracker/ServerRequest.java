@@ -15,9 +15,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 /*
  *  This class is used to send HTTP POST requests to the server.
@@ -27,6 +27,7 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 	/* reply stores the reply from the server. */
 	String reply;
 	Context context;
+	ProgressDialog dialog;
 	
 	/* constructor for the object. */
 	public ServerRequest(Context ctx)
@@ -34,6 +35,14 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 		/* context of the caller. */
 		context = ctx;
 		reply = "";
+	}
+	
+	protected void onPreExecute()
+	{
+		/* creating a dialog until the user registers. */
+		dialog = new ProgressDialog(context);
+		dialog.setMessage("Sending request to the server.");
+		dialog.show();
 	}
 	
 	protected String doInBackground(String... arguments)
@@ -77,9 +86,11 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 	
 	protected void onPostExecute(String reply)
 	{
-		Toast.makeText(context.getApplicationContext(), reply, Toast.LENGTH_LONG).show();
+		/* dismissing the dialog. */
+		dialog.dismiss();
 	}
 	
+	/* This function returns the reply string. */
 	public String getReply()
 	{
 		return reply;

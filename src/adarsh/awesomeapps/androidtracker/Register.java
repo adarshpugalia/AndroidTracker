@@ -1,6 +1,10 @@
 package adarsh.awesomeapps.androidtracker;
 
+import java.util.concurrent.ExecutionException;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -43,8 +47,10 @@ public class Register extends ActionBarActivity {
 		startActivity(intent);
 	}
 	
+	/* This function registers the user with the servers, and starts home activity if successful. */
 	public void register(View view)
 	{
+		/* extracting user details. */
 		EditText editText = (EditText)findViewById(R.id.register_edit_name);
 		String name = editText.getText().toString();
 		
@@ -54,12 +60,44 @@ public class Register extends ActionBarActivity {
 		editText = (EditText)findViewById(R.id.register_edit_password);
 		String password = editText.getText().toString();
 		
+		/* checking for empty inputs. */
 		if(name.isEmpty() || phone.isEmpty() || password.isEmpty())
 		{
 			Toast.makeText(getApplicationContext(), "Please fill all the fields.", Toast.LENGTH_LONG).show();
 			return;
 		}
 		
-		/* TO-DO fill the server send message code here. */
+		/* sending the request to the server. */
+		ServerRequest serverRequest = new ServerRequest(this);
+		try 
+		{
+			serverRequest.execute("register.php", String.valueOf(4), "Phone", phone, "GCM_ID", "abc", "Name", name, "Password", password).get();
+		}
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (ExecutionException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		/* getting the server reply. */
+		String reply = serverRequest.getReply();
+		Toast.makeText(getApplicationContext(), reply, Toast.LENGTH_LONG).show();
+		
+		/* if registeration successful, saving login details and starting home activity. */
+		if(reply.equals("Success!"))
+		{
+			SharedPreferences prefs = getSharedPreferences("LOGIN_preferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("PHONE", phone);
+			editor.putString("NAME", name);
+			editor.putString("PASSWORD", password);
+			editor.commit();
+			
+			Intent intent = new Intent(this, Home.class);
+			startActivity(intent);
+		}
 	}
 }
