@@ -26,16 +26,15 @@
       $GCM_ID = $_GET['GCM_ID'];
       $password = $_GET['Password'];
 
-      /* TO-DO this code does not work, fix it. */
       /* check if the phone is already registered. */
-      $sql_query = "SELECT * FROM users WHERE phone='$phone' LIMIT 1";
+      $sql_query = "SELECT * FROM `users` WHERE `phone`='$phone' LIMIT 1";
       $result = mysqli_query($connection, $sql_query);
 
       if(!$result)
          die("Error registering user: " . mysqli_error($connection));
 
-      if(mysql_num_rows($result)>0)
-         echo "Error registring user: Phone number already registered.";
+      if(mysqli_num_rows($result)>0)
+         die("Error registring user: Phone number already registered.");
 
       /* registering the new user. */
       $sql_query = "INSERT INTO users (phone, GCM_ID, name, password)
