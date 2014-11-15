@@ -1,0 +1,46 @@
+<?php
+	
+	/* initializing database variables. */
+	$server = 'localhost';
+	$database = 'android_tracker';
+	$username = 'root';
+	$password = '123';
+
+	/* connecting to the databse. */
+	$connection = mysqli_connect($server, $username, $password, $database);
+
+	/* checking for successful connection. */
+   	if(!$connection)
+   		die("Connection failed: " . mysqli_connect_error());
+
+   	/* for post requests. */
+   	if($_POST)
+   	{
+   		$phone = $_POST['Phone'];
+   		$password = $_POST['Password'];
+
+   		/* getting the record from the databse. */
+      	$sql_query = "SELECT * FROM `users` WHERE `phone`='$phone' LIMIT 1";
+      	$result = mysqli_query($connection, $sql_query);
+
+      	/* error in connection. */
+      	if(!$result)
+      		die("Error logging in: " . mysqli_error($connection));
+
+      	/* if no record found. */
+      	if(mysqli_num_rows($result)==0)
+      		die("Error logging in: Phone number not registered.");
+
+      	/* getting the associated array. */
+      	$row = $result->fetch_assoc();
+
+      	/* checking for correct password. */
+      	if(strcmp($password, $row['password'])==0)
+      		echo "Success!";
+      	else
+      		die("Error logging in: Wrong password.");
+   	}
+
+   	mysqli_close($connection);
+
+?>
