@@ -13,7 +13,7 @@
         android:padding="10sp" >
 
         <TextView
-            android:id="@+id/text_phone"
+            android:id="@+id/login_text_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mobile No. : "
@@ -21,7 +21,7 @@
             tools:ignore="HardcodedText" />
 
         <EditText
-            android:id="@+id/edit_phone"
+            android:id="@+id/login_edit_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -40,7 +40,7 @@
         android:padding="10sp" >
 
         <TextView
-            android:id="@+id/text_password"
+            android:id="@+id/login_text_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password : "
@@ -48,7 +48,7 @@
             tools:ignore="HardcodedText" />
 
         <EditText
-            android:id="@+id/edit_password"
+            android:id="@+id/login_edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

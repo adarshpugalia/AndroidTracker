@@ -1,11 +1,17 @@
 package adarsh.awesomeapps.androidtracker;
 
+import java.util.concurrent.ExecutionException;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class Login extends ActionBarActivity {
 
@@ -39,5 +45,54 @@ public class Login extends ActionBarActivity {
 	{
 		Intent intent = new Intent(this, Register.class);
 		startActivity(intent);
+	}
+	
+	public void login(View view)
+	{
+		EditText editText = (EditText)findViewById(R.id.login_edit_password);
+		String phone = editText.getText().toString();
+		
+		editText = (EditText)findViewById(R.id.login_edit_password);
+		String password = editText.getText().toString();
+		
+		/* checking for empty inputs. */
+		if(phone.isEmpty() || password.isEmpty())
+		{
+			Toast.makeText(getApplicationContext(), "Please fill all the fields.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		/* sending the request to the server for login. */
+		ServerRequest serverRequest = new ServerRequest(this);
+		try 
+		{
+			serverRequest.execute("login.php", String.valueOf(2), "Phone", phone, "Password", password).get();
+		}
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (ExecutionException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		/* getting the server reply. */
+		String reply = serverRequest.getReply();
+		Toast.makeText(getApplicationContext(), reply, Toast.LENGTH_LONG).show();
+		
+		/* if login successful, saving login details and starting home activity. */
+		/* TO - DO do we need to ask server for other details ? */
+		if(reply.equals("Success!"))
+		{
+			SharedPreferences prefs = getSharedPreferences("LOGIN_preferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("PHONE", phone);
+			editor.putString("PASSWORD", password);
+			editor.commit();
+			
+			Intent intent = new Intent(this, Home.class);
+			startActivity(intent);
+		}
 	}
 }
