@@ -49,7 +49,7 @@ public class Login extends ActionBarActivity {
 	
 	public void login(View view)
 	{
-		EditText editText = (EditText)findViewById(R.id.login_edit_password);
+		EditText editText = (EditText)findViewById(R.id.login_edit_phone);
 		String phone = editText.getText().toString();
 		
 		editText = (EditText)findViewById(R.id.login_edit_password);
