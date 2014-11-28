@@ -27,15 +27,19 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_LONG).show();
 		}
 		/* checking for play services. */
-		else if(!checkPlayServices())
+		/*else if(!checkPlayServices())
 		{
 			Toast.makeText(getApplicationContext(), "Play services not available. Try Again.", Toast.LENGTH_LONG).show();
-		}
+		}*/
 		else 
 		{	
 			/* get the GCM registration ID. */
-			getRegistrationID();
+			//getRegistrationID();
 			isChecked = true;
+			
+			Intent intent = new Intent(this, TrackingService.class);
+			startService(intent);
+			
 			Toast.makeText(getApplicationContext(), "Tap to continue.", Toast.LENGTH_LONG).show();
 		}
 	}
@@ -63,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onResume()
 	{
 	    super.onResume();
-	    checkPlayServices();
+	    //checkPlayServices();
 	}
 	
 	/* onclicklistener for the activity. */

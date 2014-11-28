@@ -2,18 +2,24 @@ package adarsh.awesomeapps.androidtracker;
 
 import java.util.concurrent.ExecutionException;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Home extends ActionBarActivity {
 
+	Activity activity = this;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +62,13 @@ public class Home extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void track_user(View view)
+	{
+		Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(this, User.class);
+		startActivity(intent);
+	}
+	
 	/* This function displays on the screen the list of registered users. */
 	public void populateContacts()
 	{	
@@ -71,12 +84,20 @@ public class Home extends ActionBarActivity {
 			contact += prefs.getString("CONTACTS_"+String.valueOf(i), "") + "\n";
 		
 		textView.setText(contact);
+		textView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(activity, User.class);
+				startActivity(intent);
+			}
+		});
 	}
 	
 	/* This function checks if there are any registered users in the preference file. */
 	Boolean checkPrefFile()
 	{
-		SharedPreferences prefs = getSharedPreferences("CONTACT_preferences", Context.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("CONTACTS_preferences", Context.MODE_PRIVATE);
 		int contacts = prefs.getInt("CONTACTS", 0);
 		
 		if(contacts == 0)

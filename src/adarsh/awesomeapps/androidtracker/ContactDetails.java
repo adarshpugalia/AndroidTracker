@@ -30,7 +30,7 @@ public class ContactDetails
 	Cursor getAllContacts()
 	{
 		/* if the cursor is initialized before, closing the cursor. */
-		if(!cursor.isClosed())
+		if(cursor!=null && !cursor.isClosed())
 			cursor.close();
 		
 		/* getting the contact list. */
@@ -53,7 +53,7 @@ public class ContactDetails
 			index++;
 		}
 		
-		if(!cursor.isClosed())
+		if(cursor!=null && !cursor.isClosed())
 			cursor.close();
 		return contacts;
 	}

@@ -49,7 +49,7 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 	{
 		/* create a httpClient and a new post request. */
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPostRequest = new HttpPost("http://172.16.0.34:80/AndroidTracker/"+arguments[0]);
+		HttpPost httpPostRequest = new HttpPost("http://172.16.0.111:80/AndroidTracker/"+arguments[0]);
 		
 		/* extracting the number of arguments in the post requests. */
 		int numberOfArguments = Integer.parseInt(arguments[1]);

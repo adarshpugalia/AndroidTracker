@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -95,7 +96,10 @@ public class GCMRegistrationID {
 				dialog.dismiss();
 				
 				if(!message.isEmpty())
+				{
+					Toast.makeText(context, message, Toast.LENGTH_LONG);
 					Log.e("Error_log", message);
+				}
 			}			
 		}.execute(null, null, null);
 	}

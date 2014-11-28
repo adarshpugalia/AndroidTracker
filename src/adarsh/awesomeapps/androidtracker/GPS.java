@@ -1,6 +1,5 @@
 package adarsh.awesomeapps.androidtracker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.location.Location;
@@ -11,13 +10,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 
-public class GPS implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
+public class GPS implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener
 {
-	Activity activity;
+	User activity;
 	LocationClient locationClient;
 	Location currentLocation;
 	
-	GPS(Activity act)
+	GPS(User act)
 	{
 		activity = act;
 		locationClient = new LocationClient(activity, this, this);
@@ -32,7 +31,8 @@ public class GPS implements GooglePlayServicesClient.ConnectionCallbacks, Google
     public void onConnected(Bundle dataBundle)
     {
         // Display the connection status
-        //Toast.makeText(activity.getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity.getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+        activity.updateLocation();
     }
     
     /*
@@ -85,6 +85,13 @@ public class GPS implements GooglePlayServicesClient.ConnectionCallbacks, Google
              */
             Toast.makeText(activity.getApplicationContext(), "Error in play services. Try Again.", Context.MODE_PRIVATE).show();
         }
+    }
+    
+    @Override
+    public void onLocationChanged(Location location)
+    {
+    	Toast.makeText(activity.getApplicationContext(), "Location changed.", Toast.LENGTH_SHORT).show();
+        activity.updateLocation();
     }
     
     void connect()
