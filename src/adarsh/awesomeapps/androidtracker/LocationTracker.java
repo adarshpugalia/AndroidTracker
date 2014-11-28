@@ -32,7 +32,10 @@ public class LocationTracker implements android.location.LocationListener
 		isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 		
 		if(!isGPSEnabled && !isNetworkEnabled)
+		{
+			Toast.makeText(context, "No network found.", Toast.LENGTH_SHORT).show();
 			return null;
+		}
 		
 		if(isNetworkEnabled)
 		{

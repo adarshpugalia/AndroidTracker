@@ -60,6 +60,7 @@
         </activity>
         
         <service android:name="adarsh.awesomeapps.androidtracker.TrackingService" />
+        <service android:name="adarsh.awesomeapps.androidtracker.UpdateLocationService" />
     </application>
 
     <!-- user permission to access network state. -->
