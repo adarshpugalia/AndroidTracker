@@ -54,20 +54,23 @@ public class UpdateLocationService extends Service
 					/* obtaining the reply from the server. */
 					String reply = serverRequest.getReply();
 					if(!reply.equals("Success!"))
-						Toast.makeText(getApplicationContext(), reply, Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "Update: "+reply, Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					//Toast.makeText(getApplicationContext(), "Location Null.", Toast.LENGTH_SHORT).show();
 				}
 				
 				/* scheduling the runnable again. */
-				handler.postDelayed(runnable, 10000);
+				handler.postDelayed(runnable, 5000);
 			}
 		};
-		handler.postDelayed(runnable, 10000);
+		handler.postDelayed(runnable, 5000);
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int contactNumber)
 	{
-		//trackedContactNumbers.add(String.valueOf(contactNumber));
 		return START_STICKY;
 	}
 	
