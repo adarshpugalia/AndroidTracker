@@ -1,54 +1,90 @@
 package adarsh.awesomeapps.androidtracker;
 
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
-import android.text.format.Time;
-
-class TrackingTimerTask extends TimerTask
-{
-	Context context;
-	SharedPreferences prefs;
-	SharedPreferences.Editor editor;
-	
-	TrackingTimerTask(Context ctx)
-	{
-		context = ctx;
-		prefs = context.getSharedPreferences("TRACKING_preferences", Context.MODE_PRIVATE);
-		editor = prefs.edit();
-	}
-	
-	public void run()
-	{
-		Time time = new Time();
-		time.setToNow();
-		editor.putString("CUR_TIME", Long.toString(time.toMillis(false)));
-		editor.commit();
-	}
-}
+import android.widget.Toast;
 
 public class TrackingService extends Service
 {
 	Vector <String> trackedContactNumbers;
+	Handler handler;
+	Runnable runnable;
 	Timer timer;
 	
 	@Override
 	public void onCreate()
 	{
-		timer = new Timer();
-		timer.schedule(new TrackingTimerTask(getApplicationContext()), 1000, 1000);
+		trackedContactNumbers = new Vector<String>();
+		handler = new Handler();
+		runnable = new Runnable() {
+			
+			@Override
+			public void run()
+			{
+				SharedPreferences prefs = getSharedPreferences("CONTACTS_preferences", Context.MODE_PRIVATE);
+				int count = prefs.getInt("CONTACTS", 0);
+				
+				for(int i=0; i<count; i++)
+				{
+					String currentContact = prefs.getString("CONTACTS_"+String.valueOf(i), "");
+					if((!currentContact.equals("")) && (!trackedContactNumbers.contains(currentContact)))
+						trackedContactNumbers.add(currentContact);
+				}
+				
+				prefs = getSharedPreferences("TRACKING_preferences", Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = prefs.edit();
+				
+				int size = trackedContactNumbers.size();
+				for(int i=0; i<size; i++)
+				{
+					/* sending the location to the server. */
+					ServerRequest serverRequest = new ServerRequest(getApplicationContext());
+					try
+					{
+						serverRequest.execute("track_user.php", String.valueOf(1), "Phone", trackedContactNumbers.get(i)).get();
+					} catch (InterruptedException | ExecutionException e)
+					{
+					e.printStackTrace();
+					}
+					
+					/* obtaining the reply from the server. */
+					String reply = serverRequest.getReply();
+					
+					String[] trackedUser = reply.split("\\$");
+					if(trackedUser[0].equals("Success!"))
+					{
+						if(trackedUser.length>1)
+						{
+							Toast.makeText(getApplicationContext(), trackedContactNumbers.get(i)+"latitude", Toast.LENGTH_LONG).show();
+							editor.putString(trackedContactNumbers.get(i)+"latitude", trackedUser[1]);
+							editor.putString(trackedContactNumbers.get(i)+"longitude", trackedUser[2]);
+							editor.commit();
+						}
+					}
+					/*else
+					{
+						Toast.makeText(getApplicationContext(), "Location not found.", Toast.LENGTH_LONG).show();
+					}*/
+				}
+				
+				/* scheduling the runnable again. */
+				handler.postDelayed(runnable, 10000);
+			}
+		};
+		handler.postDelayed(runnable, 10000);
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int contactNumber)
 	{
-		//trackedContactNumbers.add(String.valueOf(contactNumber));
 		return START_STICKY;
 	}
 	
