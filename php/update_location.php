@@ -33,7 +33,7 @@
       {
          $sql_query = "UPDATE `user_location` SET `latitude`='$latitude',`longitude`='$longitude' WHERE `phone`='$phone'";
          if(mysqli_query($connection, $sql_query))
-            echo "Success from update!";
+            echo "Success!";
          else
             die("Error updating location: " . mysqli_error($connection));
       }
@@ -45,7 +45,7 @@
                   VALUES ('$phone', '$latitude', '$longitude')";
 
          if(mysqli_query($connection, $sql_query))
-            echo "Success from insert!";
+            echo "Success!";
          else
             die("Error updating location: " . mysqli_error($connection));
       }
