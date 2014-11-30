@@ -63,7 +63,6 @@ public class TrackingService extends Service
 					{
 						if(trackedUser.length>1)
 						{
-							Toast.makeText(getApplicationContext(), trackedContactNumbers.get(i)+"latitude", Toast.LENGTH_LONG).show();
 							editor.putString(trackedContactNumbers.get(i)+"latitude", trackedUser[1]);
 							editor.putString(trackedContactNumbers.get(i)+"longitude", trackedUser[2]);
 							editor.commit();

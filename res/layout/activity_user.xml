@@ -6,16 +6,20 @@
     android:padding="10sp"
     tools:context="adarsh.awesomeapps.androidtracker.User" >
 
-    <TextView
-        android:id="@+id/user_text_lattitude"
+   <TextView
+        android:id="@+id/user_text_track"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="Track User"
+        android:clickable="true"
+        android:onClick="track"/>
     
     <TextView
-        android:id="@+id/user_text_longitude"
+        android:id="@+id/user_text_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="See on Map"
+        android:clickable="true"
+        android:onClick="drawMap"/>
 
 </LinearLayout>

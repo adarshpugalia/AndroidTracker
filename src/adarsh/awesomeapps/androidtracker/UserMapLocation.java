@@ -33,7 +33,7 @@ public class UserMapLocation extends ActionBarActivity
 		String contact = intent.getStringExtra(User.EXTRA_MESSAGE);
 		getActionBar().setTitle((new ContactDetails(getContentResolver())).getContactName(contact));
 		
-		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		/*mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         
         LocationTracker locationTracker = new LocationTracker(getApplicationContext());
         Location location = locationTracker.getLocation();
@@ -46,7 +46,7 @@ public class UserMapLocation extends ActionBarActivity
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("contact"));
         
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
-        mMap.animateCamera(cameraUpdate);
+        mMap.animateCamera(cameraUpdate);*/
 	}
 
 	@Override

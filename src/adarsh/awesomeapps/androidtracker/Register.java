@@ -96,7 +96,13 @@ public class Register extends ActionBarActivity {
 			editor.putString("PASSWORD", password);
 			editor.commit();
 			
-			Intent intent = new Intent(this, Home.class);
+			Intent intent = new Intent(this, UpdateLocationService.class);
+			startService(intent);
+			
+			intent = new Intent(this, TrackingService.class);
+			startService(intent);
+			
+			intent = new Intent(this, Home.class);
 			startActivity(intent);
 		}
 	}

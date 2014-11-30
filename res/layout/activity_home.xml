@@ -12,13 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/home_scroll_contacts">
-        
-	    <TextView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:id="@+id/home_text_contacts"
-	        android:onClick="track_user" />
-	    
 	</ScrollView>
 
 </RelativeLayout>

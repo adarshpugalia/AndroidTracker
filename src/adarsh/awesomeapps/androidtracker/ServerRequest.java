@@ -27,7 +27,6 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 	/* reply stores the reply from the server. */
 	String reply;
 	Context context;
-	ProgressDialog dialog;
 	
 	/* constructor for the object. */
 	public ServerRequest(Context ctx)
@@ -37,19 +36,17 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 		reply = "";
 	}
 	
+	@Override
 	protected void onPreExecute()
 	{
-		/* creating a dialog until the user registers. */
-		dialog = new ProgressDialog(context);
-		dialog.setMessage("Sending request to the server.");
-		dialog.show();
+		super.onPreExecute();
 	}
 	
 	protected String doInBackground(String... arguments)
 	{
 		/* create a httpClient and a new post request. */
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPostRequest = new HttpPost("http://172.16.0.111:80/AndroidTracker/"+arguments[0]);
+		HttpPost httpPostRequest = new HttpPost("http://172.16.0.43/AndroidTracker/"+arguments[0]);
 		
 		/* extracting the number of arguments in the post requests. */
 		int numberOfArguments = Integer.parseInt(arguments[1]);
@@ -86,8 +83,7 @@ public class ServerRequest extends AsyncTask<String, Void, String>
 	
 	protected void onPostExecute(String reply)
 	{
-		/* dismissing the dialog. */
-		dialog.dismiss();
+		super.onPostExecute(reply);
 	}
 	
 	/* This function returns the reply string. */

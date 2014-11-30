@@ -40,7 +40,7 @@ public class LocationTracker implements android.location.LocationListener
 		if(isNetworkEnabled)
 		{
 			locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
+                    LocationManager.NETWORK_PROVIDER,
                     (long)1000*60,
                     (float)10, this);
 			location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);

@@ -1,5 +1,7 @@
 package adarsh.awesomeapps.androidtracker;
 
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -7,17 +9,23 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Home extends ActionBarActivity {
 
+	public final static String EXTRA_MESSAGE = "adarsh.awesomeapps.androidtracker.MESSAGE";
 	Activity activity = this;
 	
 	@Override
@@ -72,26 +80,46 @@ public class Home extends ActionBarActivity {
 	/* This function displays on the screen the list of registered users. */
 	public void populateContacts()
 	{	
-		/* Obtaining the text view of the layout. */
-		TextView textView = (TextView)findViewById(R.id.home_text_contacts);
-		String contact = "";
+		ContactDetails contactDetails = new ContactDetails(getContentResolver());
 		
-		/* Obtaining data from shared preference file. */
+		LinearLayout linearLayout = new LinearLayout(this);
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		
 		SharedPreferences prefs = getSharedPreferences("CONTACTS_preferences", Context.MODE_PRIVATE);
 		int contacts = prefs.getInt("CONTACTS", 0);
 		
-		for(int i=0; i<contacts; i++)
-			contact += prefs.getString("CONTACTS_"+String.valueOf(i), "") + "\n";
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		int height = metrics.heightPixels;
 		
-		textView.setText(contact);
-		textView.setOnClickListener(new OnClickListener() {
+		for(int i=0; i<contacts; i++)
+		{
+			final String contactNum = prefs.getString("CONTACTS_"+String.valueOf(i), "");
 			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(activity, User.class);
-				startActivity(intent);
-			}
-		});
+			TextView textView = new TextView(this);
+			textView.setText(contactDetails.getContactName(contactNum));
+			textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, (int)height/9));
+			textView.setTextSize(10 * getResources().getDisplayMetrics().density);
+			textView.setGravity(Gravity.CENTER_VERTICAL);
+			textView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(activity, User.class);
+					intent.putExtra(EXTRA_MESSAGE, contactNum);
+					startActivity(intent);
+				}
+			});
+			linearLayout.addView(textView);
+			
+			TextView blank_view = new TextView(this);
+			blank_view.setText("");
+			blank_view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 1));
+			blank_view.setBackgroundColor(Color.GRAY);
+			linearLayout.addView(blank_view);
+		}
+		
+		//scrollView.addView(scrollView);
+		this.setContentView(linearLayout);
 	}
 	
 	/* This function checks if there are any registered users in the preference file. */
@@ -142,13 +170,16 @@ public class Home extends ActionBarActivity {
 		
 		/* getting the server reply. */
 		String reply = serverRequest.getReply();
-		Toast.makeText(getApplicationContext(), reply, Toast.LENGTH_LONG).show();
+		Vector<String> registeredContactsUnique = new Vector<String>();
 		
 		String[] registeredContacts = reply.split("\\$");
 		for(int i=0; i<registeredContacts.length; i++)
 		{
-			edit.putString("CONTACTS_"+String.valueOf(count), registeredContacts[i]);
-			count++;
+			if(!registeredContactsUnique.contains(registeredContacts[i]))
+			{
+				edit.putString("CONTACTS_"+String.valueOf(count), registeredContacts[i]);
+				count++;
+			}
 		}
 		
 		edit.putInt("CONTACTS", count);

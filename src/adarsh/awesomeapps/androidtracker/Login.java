@@ -49,6 +49,9 @@ public class Login extends ActionBarActivity {
 	
 	public void login(View view)
 	{
+		SharedPreferences prefs = getSharedPreferences("GCM_preferences", Context.MODE_PRIVATE);
+		String gcmID = prefs.getString("REGISTRATION_ID", "");
+		
 		EditText editText = (EditText)findViewById(R.id.login_edit_phone);
 		String phone = editText.getText().toString();
 		
@@ -62,11 +65,17 @@ public class Login extends ActionBarActivity {
 			return;
 		}
 		
+		if(gcmID.isEmpty())
+		{
+			Toast.makeText(getApplicationContext(), "GCM ID not found.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
 		/* sending the request to the server for login. */
 		ServerRequest serverRequest = new ServerRequest(this);
 		try 
 		{
-			serverRequest.execute("login.php", String.valueOf(2), "Phone", phone, "Password", password).get();
+			serverRequest.execute("login.php", String.valueOf(3), "Phone", phone, "Password", password, "GCM_ID", gcmID).get();
 		}
 		catch (InterruptedException e) 
 		{
@@ -85,13 +94,20 @@ public class Login extends ActionBarActivity {
 		/* TO - DO do we need to ask server for other details ? */
 		if(reply.equals("Success!"))
 		{
-			SharedPreferences prefs = getSharedPreferences("LOGIN_preferences", Context.MODE_PRIVATE);
+			
+			prefs = getSharedPreferences("LOGIN_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString("PHONE", phone);
 			editor.putString("PASSWORD", password);
 			editor.commit();
 			
-			Intent intent = new Intent(this, Home.class);
+			Intent intent = new Intent(this, TrackingService.class);
+			startService(intent);
+			
+			intent = new Intent(this, UpdateLocationService.class);
+			startService(intent);
+			
+			intent = new Intent(this, Home.class);
 			startActivity(intent);
 		}
 	}

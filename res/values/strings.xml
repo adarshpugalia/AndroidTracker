@@ -8,5 +8,7 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_user">User</string>
+    <string name="title_activity_user_map_location">User Map Location</string>
+    <string name="title_activity_track_request">Track Requests</string>
 
 </resources>

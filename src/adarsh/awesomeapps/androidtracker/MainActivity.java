@@ -27,18 +27,15 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_LONG).show();
 		}
 		/* checking for play services. */
-		/*else if(!checkPlayServices())
+		else if(!checkPlayServices())
 		{
 			Toast.makeText(getApplicationContext(), "Play services not available. Try Again.", Toast.LENGTH_LONG).show();
-		}*/
+		}
 		else 
 		{	
 			/* get the GCM registration ID. */
-			//getRegistrationID();
+			getRegistrationID();
 			isChecked = true;
-			
-			Intent intent = new Intent(this, TrackingService.class);
-			startService(intent);
 			
 			Toast.makeText(getApplicationContext(), "Tap to continue.", Toast.LENGTH_LONG).show();
 		}
@@ -76,12 +73,19 @@ public class MainActivity extends ActionBarActivity {
 		if(isChecked)
 		{
 			Intent intent;
+			/*intent = new Intent(this, TrackingService.class);
+			startService(intent);
+			
+			intent = new Intent(this, UpdateLocationService.class);
+			startService(intent);*/
 			
 			/* If no login data found start Login activity, else start home activity*/
 			if(CommonUtilities.getPhoneNumber(this).isEmpty())
 				intent = new Intent(this, Login.class);
 			else
+			{	
 				intent = new Intent(this, Home.class);
+			}
 			
 			startActivity(intent);
 		}
