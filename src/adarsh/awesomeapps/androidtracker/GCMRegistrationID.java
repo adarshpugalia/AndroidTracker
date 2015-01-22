@@ -57,9 +57,9 @@ public class GCMRegistrationID {
 	public void register()
 	{
 		/* creating a dialog box. */
-		final ProgressDialog dialog = new ProgressDialog(context);
+		/*final ProgressDialog dialog = new ProgressDialog(context);
 		dialog.setMessage("Registering with Google Cloud Servers!");
-		dialog.show();
+		dialog.show();*/
 		
 		/* registering to GCM. */
 		new AsyncTask<Void, Void, String>() 
@@ -93,7 +93,7 @@ public class GCMRegistrationID {
 			protected void onPostExecute(String message)
 			{
 				/* dismissing the dialog box. */
-				dialog.dismiss();
+				//dialog.dismiss();
 				
 				if(!message.isEmpty())
 				{

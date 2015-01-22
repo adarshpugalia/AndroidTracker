@@ -62,10 +62,10 @@ public class UpdateLocationService extends Service
 				}
 				
 				/* scheduling the runnable again. */
-				handler.postDelayed(runnable, 5000);
+				handler.postDelayed(runnable, 30000);
 			}
 		};
-		handler.postDelayed(runnable, 5000);
+		handler.postDelayed(runnable, 30000);
 	}
 	
 	@Override

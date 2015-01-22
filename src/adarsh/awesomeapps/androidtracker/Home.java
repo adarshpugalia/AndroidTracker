@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,8 +83,7 @@ public class Home extends ActionBarActivity {
 	{	
 		ContactDetails contactDetails = new ContactDetails(getContentResolver());
 		
-		LinearLayout linearLayout = new LinearLayout(this);
-		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout linearLayout = (LinearLayout)findViewById(R.id.home_linear);
 		
 		SharedPreferences prefs = getSharedPreferences("CONTACTS_preferences", Context.MODE_PRIVATE);
 		int contacts = prefs.getInt("CONTACTS", 0);
@@ -119,7 +119,7 @@ public class Home extends ActionBarActivity {
 		}
 		
 		//scrollView.addView(scrollView);
-		this.setContentView(linearLayout);
+		//this.setContentView(linearLayout);
 	}
 	
 	/* This function checks if there are any registered users in the preference file. */

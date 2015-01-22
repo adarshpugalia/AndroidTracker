@@ -99,8 +99,8 @@ public class Register extends ActionBarActivity {
 			Intent intent = new Intent(this, UpdateLocationService.class);
 			startService(intent);
 			
-			intent = new Intent(this, TrackingService.class);
-			startService(intent);
+			/*intent = new Intent(this, TrackingService.class);
+			startService(intent);*/
 			
 			intent = new Intent(this, Home.class);
 			startActivity(intent);
