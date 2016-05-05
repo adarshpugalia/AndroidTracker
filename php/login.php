@@ -1,13 +1,7 @@
 <?php
 	
-	/* initializing database variables. */
-	$server = 'localhost';
-	$database = 'android_tracker';
-	$username = 'root';
-	$password = '123';
-
 	/* connecting to the databse. */
-	$connection = mysqli_connect($server, $username, $password, $database);
+	include("connect_database.php");
 
 	/* checking for successful connection. */
    	if(!$connection)

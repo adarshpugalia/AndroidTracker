@@ -1,16 +1,7 @@
 <?php
 
-   $server = 'localhost';
-   $username = 'root';
-   $password = '123';
-   $database = 'android_tracker';
-
-   $phone = "";
-   $name = "";
-   $GCM_ID = "";
-
-   /* creating connection to the database. */
-   $connection = mysqli_connect($server, $username, $password, $database);
+   /* connecting to the databse. */
+   include("connect_database.php");
 
    /* checking for successful connection. */
    if(!$connection)
